@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter arrayAdapter;
 
     Spinner spinner;
+    long timeCurrent;
     String[] array = new String[100];
     private int[] colors = {
             Color.RED,
@@ -62,14 +64,19 @@ public class MainActivity extends AppCompatActivity {
         gridView.setAdapter(arrayAdapter);
 
         time = (TextView) findViewById(R.id.time);
-        new CountDownTimer(300000, 1000) {
+        new CountDownTimer(30000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 time.setText("  " + millisUntilFinished / 1000);
+                timeCurrent = millisUntilFinished / 1000;
             }
 
-            public void onFinish() {
+            public void onFinish()
+            {
                 time.setText("Time out!");
+                Intent intent = new Intent(getApplicationContext(), ScoreActivity.class);
+                intent.putExtra("mykey", timeCurrent);
+                startActivity(intent);
             }
         }.start();
 
