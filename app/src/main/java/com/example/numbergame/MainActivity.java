@@ -54,11 +54,16 @@ public class MainActivity extends AppCompatActivity {
 
         Random random = new Random();
 
-        for (int i = 0; i < array.length; i++) {
-            int ran = random.nextInt(100) + 1;
-            array[i] = String.valueOf(ran);
+        for(int i = 0; i < 100; i++){
+            array[i] = String.valueOf(i + 1);
         }
+        for (int i = array.length - 1; i > 0; i--) {
+            int index = random.nextInt(i + 1);
 
+            int temp = Integer.parseInt(array[i]);
+            array[i] = array[index];
+            array[index] = String.valueOf(temp);
+        }
         gridView = (GridView) findViewById(R.id.gridView);
         arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_expandable_list_item_1, array);
         gridView.setAdapter(arrayAdapter);
@@ -114,6 +119,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // Do nothing
+            }
+        });
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                String selectedItem = array[position];
+                int intPosition = Integer.parseInt(selectedItem);
+
+                arrayAdapter.remove(intPosition);
+                gridView.setAdapter(arrayAdapter);
             }
         });
     }
