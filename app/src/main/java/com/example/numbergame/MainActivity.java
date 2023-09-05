@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     Spinner spinner;
     long timeCurrent;
-    String[] array = new String[100];
+    String[] array = new String[10];
     private int[] colors = {
             Color.RED,
             Color.GREEN,
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         Random random = new Random();
 
-        for(int i = 0; i < 100; i++){
+        for(int i = 0; i < array.length; i++){
             array[i] = String.valueOf(i + 1);
         }
         for (int i = array.length - 1; i > 0; i--) {
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onTick(long millisUntilFinished) {
                 time.setText("  " + millisUntilFinished / 1000);
-                timeCurrent = millisUntilFinished / 1000;
+                timeCurrent = 30000 - millisUntilFinished / 1000;
             }
 
             public void onFinish()
@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
         btStart = (Button) findViewById(R.id.btStart);
         spinner = (Spinner) findViewById(R.id.language);
         spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"EN", "VI"}));
-
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -125,12 +124,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                String selectedItem = array[position];
-                int intPosition = Integer.parseInt(selectedItem);
-
-                arrayAdapter.remove(intPosition);
+                array[position] = "";
+                arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_expandable_list_item_1, array);
                 gridView.setAdapter(arrayAdapter);
             }
         });
+
+        boolean tatCaLaKhoangTrang = true;
+        for (String phanTu : array) {
+            if (!phanTu.equals(" ")) {
+                tatCaLaKhoangTrang = false;
+                break;
+            }
+        }
+
+        if (tatCaLaKhoangTrang) {
+            Intent intent = new Intent(getApplicationContext(), ScoreActivity.class);
+            intent.putExtra("mykey", timeCurrent);
+            startActivity(intent);
+        }
     }
 }
