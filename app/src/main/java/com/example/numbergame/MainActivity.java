@@ -131,14 +131,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         boolean tatCaLaKhoangTrang = true;
-        for (String phanTu : array) {
-            if (!phanTu.equals(" ")) {
+        for(int i = 0; i < array.length; i++){
+            if(array[i] != ""){
                 tatCaLaKhoangTrang = false;
-                break;
             }
         }
 
-        if (tatCaLaKhoangTrang) {
+        if (tatCaLaKhoangTrang == true) {
             Intent intent = new Intent(getApplicationContext(), ScoreActivity.class);
             intent.putExtra("mykey", timeCurrent);
             startActivity(intent);
